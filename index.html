@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ke Gong</title>
+<meta name="description" content="Personal homepage of Ke Gong.">
+<style>
+:root {
+  --bg: #fafaf8;
+  --text: #1a1a1a;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-soft: #eef2ff;
+  --border: #e5e7eb;
+  --card: #ffffff;
+  --radius: 12px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+nav {
+  position: sticky; top: 0; z-index: 10;
+  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 58px; gap: 16px; }
+.nav-brand { font-weight: 700; color: var(--text); }
+.nav-links { display: flex; gap: 18px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+.nav-links a { color: var(--muted); font-size: 0.92rem; }
+.nav-links a:hover { color: var(--accent); }
+.hero { padding: 54px 0 26px; }
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; }
+.hero-name { font-size: 2.25rem; margin: 0 0 12px; letter-spacing: -0.4px; }
+.role { color: var(--muted); margin-bottom: 3px; }
+.hero-contact { color: var(--accent); margin: 14px 0 8px; font-weight: 500; }
+.hero-socials { display: flex; gap: 12px; flex-wrap: wrap; }
+.photo-placeholder {
+  width: 160px; height: 160px; border: 1px dashed var(--border); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 0.9rem; background: var(--card);
+}
+section { padding: 32px 0 8px; }
+.section-title { margin-bottom: 16px; }
+.section-title h2 { margin: 0; font-size: 1.35rem; letter-spacing: -0.2px; }
+.bio-text { margin: 0 0 12px; }
+.news-table { width: 100%; border-collapse: collapse; }
+.news-table td { padding: 8px 0; vertical-align: top; border-bottom: 1px solid var(--border); }
+.news-table tr:last-child td { border-bottom: none; }
+.news-table td:first-child { white-space: nowrap; font-weight: 700; color: var(--accent); padding-right: 18px; }
+.item {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px 20px; margin-bottom: 14px;
+}
+.item-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+.item-title { font-weight: 700; }
+.item-date { color: var(--muted); font-size: 0.88rem; white-space: nowrap; }
+.item-sub { color: var(--accent); font-weight: 600; font-size: 0.92rem; }
+.item-where { color: var(--muted); font-size: 0.9rem; }
+.item ul { margin: 8px 0 0; padding-left: 20px; }
+.item li { margin-bottom: 5px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.chip { background: var(--accent-soft); color: var(--accent); padding: 4px 11px; border-radius: 999px; font-size: 0.86rem; font-weight: 600; }
+.pub { margin-bottom: 18px; }
+.pub-title { font-weight: 700; }
+.pub-meta { color: var(--muted); font-size: 0.9rem; }
+footer { margin-top: 36px; padding: 24px 0 40px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); }
+@media (max-width: 680px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .item-head { flex-direction: column; gap: 2px; }
+  .nav-inner { height: auto; padding: 12px 0; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<nav><div class="container nav-inner">
+<a href="#top" class="nav-brand">Ke Gong</a>
+<ul class="nav-links">
+<li><a href="#about">About</a></li>
+<li><a href="#research">Research</a></li>
+<li><a href="#education">Education</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#experience">Experience</a></li>
+<li><a href="#awards">Awards</a></li>
+<li><a href="#publications">Publications</a></li>
+<li><a href="#skills">Skills</a></li>
+</ul></div></nav>
+<main id="top">
+<section class="hero container"><div class="hero-grid"><div class="hero-content">
+<h1 class="hero-name">Ke Gong</h1>
+<div class="role">B.Sc. in Computer Science, Dalian University of Technology</div>
+<div class="role">Incoming Graduate Student, UC Santa Barbara</div>
+<div class="hero-contact"><a href="mailto:kgong@ucsb.edu">kgong@ucsb.edu</a></div>
+<div class="hero-socials">
+</div></div>
+<div class="hero-image"><div class="photo-placeholder">Photo</div></div>
+</div></div></section>
+<section id="about" class="container"><div class="section-title"><h2>About</h2></div>
+<p class="bio-text">Ke Gong received his B.Sc. in Computer Science from Dalian University of Technology and will start the Graduate Academic Preparation Program (GAPP) at UC Santa Barbara in September 2026. His research interests include natural language processing and automatic speech recognition.</p>
+</section>
+<section id="research" class="container"><div class="section-title"><h2>Research Interests</h2></div>
+<ul>
+<li>Natural Language Processing</li>
+<li>Automatic Speech Recognition</li>
+<li>Speech-Language Model Fine-Tuning</li>
+</ul>
+</section>
+<section id="education" class="container"><div class="section-title"><h2>Education</h2></div>
+<div class="item"><div class="item-head">
+<span class="item-title">Graduate Academic Preparation Program (GAPP)</span>
+<span class="item-date">09/2026 – 06/2027</span>
+</div>
+<div class="item-sub">University of California, Santa Barbara</div>
+<div class="item-where">Santa Barbara, US · Incoming</div>
+</div>
+<div class="item"><div class="item-head">
+<span class="item-title">BSc. in Computer Science</span>
+<span class="item-date">09/2022 – 06/2026</span>
+</div>
+<div class="item-sub">Dalian University of Technology</div>
+<div class="item-where">Dalian, China</div>
+</div>
+<div class="item"><div class="item-head">
+<span class="item-title">Exchange Student</span>
+<span class="item-date">02/2025 – 03/2025</span>
+</div>
+<div class="item-sub">University of Cambridge</div>
+<div class="item-where">Cambridge, UK</div>
+</div>
+</section>
+<section id="projects" class="container"><div class="section-title"><h2>Research Projects</h2></div>
+<div class="item"><div class="item-title">
+Dialect Speech Transcription System for Sichuan–Chongqing Dialect
+</div><ul>
+<li>Designed and implemented a high-accuracy speech transcription system using Paraformer-large (Alibaba ASR model) as the base framework, built from a ~29,000-utterance subset of the open-source KeSpeech dataset.</li>
+<li>Proposed a partial-parameter-freezing fine-tuning strategy, freezing low-level acoustic modules and fine-tuning only high-level semantic layers, to mitigate overfitting under limited dialect data.</li>
+<li>Reduced character error rate from 9.5% to 7.05% on KeSpeech and from 18.2% to 7.6% (58.2% relative reduction) on the WSC-Eval cross-corpus evaluation set; further reduced CER to 6.47% by integrating Qwen2-1.5B-Instruct as a post-correction module.</li>
+<li>Built and deployed an interactive demo system (FastAPI, Gradio) achieving a real-time factor below 0.02 on an RTX 4090 GPU.</li>
+</ul></div>
+<div class="item"><div class="item-title">
+Real-Time Illegal Content Detection in Livestream Video
+</div><ul>
+<li>Designed and led development of a system to detect illegal behaviors (false advertising, exaggerated claims) in e-commerce livestreams by combining speech-to-text transcription with a BERT-based classification model.</li>
+<li>Tested multiple data augmentation strategies to address training data scarcity, then applied domain-specific fine-tuning to improve detection accuracy and robustness.</li>
+</ul></div>
+<div class="item"><div class="item-title">
+Vision-Guided Robotic Box-Handling System
+</div><ul>
+<li>Contributed to a computer-vision-based robotic system (Atlas development board) for object recognition and automated box-handling.</li>
+<li>Developed the communication module linking the Atlas board and the robot controller, enabling coordinated hardware–software control between the vision-recognition module and the robot&#x27;s action execution.</li>
+</ul></div>
+</section>
+<section id="experience" class="container"><div class="section-title"><h2>Experience</h2></div>
+<div class="item"><div class="item-head">
+<span class="item-title">Dalian Hi-Think Computer Technology, Corp.</span>
+<span class="item-date">07/2024 – 09/2024</span>
+</div>
+<div class="item-sub">Intern</div><ul>
+<li>Participated in development projects, attended project meetings and discussions, and tracked project progress and implementation plans under the guidance of senior engineers.</li>
+<li>Involved in project verification and testing.</li>
+</ul></div>
+<div class="item"><div class="item-head">
+<span class="item-title">Live Stream Illegal Activity Monitoring in Real-Time Using LLM</span>
+<span class="item-date">03/2025 – 03/2026</span>
+</div>
+<div class="item-sub">Project Leader · University Innovation Project</div><ul>
+<li>Used large language models to identify illegal activities in live streams in real time and take action.</li>
+<li>As project leader, handled project management and organization, wrote the core code, and participated in managing model training and testing.</li>
+</ul></div>
+<div class="item"><div class="item-head">
+<span class="item-title">Development of Smart Robot and Task Execution System</span>
+<span class="item-date">07/2024 – 08/2024</span>
+</div>
+<div class="item-sub">Robot Software Development</div><ul>
+<li>Set up the underlying hardware control and communication system based on the robot&#x27;s built-in communication forwarding module.</li>
+<li>Completed the design of basic hardware and software technical solutions, and guided team members to use the action editor to design and optimize basic and task-specific actions.</li>
+</ul></div>
+</section>
+<section id="awards" class="container"><div class="section-title"><h2>Awards &amp; Honors</h2></div><ul>
+<li>Third Prize, “Challenge Cup” Competition, Dalian University of Technology (2023)</li>
+<li>Third Prize, National English Competition for College Students (2024)</li>
+</ul></section>
+<section id="publications" class="container"><div class="section-title"><h2>Publications</h2></div>
+<div class="pub"><div class="pub-title">CCL 2026</div></div>
+</section>
+<section id="skills" class="container"><div class="section-title"><h2>Skills</h2></div>
+<div style="margin-bottom:14px"><strong>Research</strong><div class="chips">
+<span class="chip">Natural Language Processing</span>
+<span class="chip">Automatic Speech Recognition</span>
+<span class="chip">Speech-Language Model Fine-Tuning</span>
+</div></div>
+<div style="margin-bottom:14px"><strong>Programming</strong><div class="chips">
+<span class="chip">Python</span>
+<span class="chip">C</span>
+</div></div>
+<div style="margin-bottom:14px"><strong>Frameworks &amp; Tools</strong><div class="chips">
+<span class="chip">PyTorch</span>
+<span class="chip">Hugging Face Transformers</span>
+<span class="chip">BERT</span>
+<span class="chip">Paraformer</span>
+<span class="chip">FastAPI</span>
+<span class="chip">Gradio</span>
+</div></div>
+<div style="margin-bottom:14px"><strong>Languages</strong><div class="chips">
+<span class="chip">English (proficient)</span>
+<span class="chip">Chinese (native)</span>
+</div></div>
+</section>
+</main>
+<footer>© 2026 Ke Gong</footer>
+</body></html>

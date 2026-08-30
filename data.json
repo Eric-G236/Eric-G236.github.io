@@ -1,0 +1,132 @@
+{
+  "name": "Ke Gong",
+  "roles": [
+    "B.Sc. in Computer Science, Dalian University of Technology",
+    "Incoming Graduate Student, UC Santa Barbara"
+  ],
+  "email": "kgong@ucsb.edu",
+  "github": "",
+  "website": "",
+  "about": "Ke Gong received his B.Sc. in Computer Science from Dalian University of Technology and will start the Graduate Academic Preparation Program (GAPP) at UC Santa Barbara in September 2026. His research interests include natural language processing and automatic speech recognition.",
+  "interests": [
+    "Natural Language Processing",
+    "Automatic Speech Recognition",
+    "Speech-Language Model Fine-Tuning"
+  ],
+  "education": [
+    {
+      "title": "Graduate Academic Preparation Program (GAPP)",
+      "sub": "University of California, Santa Barbara",
+      "where": "Santa Barbara, US · Incoming",
+      "date": "09/2026 – 06/2027"
+    },
+    {
+      "title": "BSc. in Computer Science",
+      "sub": "Dalian University of Technology",
+      "where": "Dalian, China",
+      "date": "09/2022 – 06/2026"
+    },
+    {
+      "title": "Exchange Student",
+      "sub": "University of Cambridge",
+      "where": "Cambridge, UK",
+      "date": "02/2025 – 03/2025"
+    }
+  ],
+  "projects": [
+    {
+      "title": "Dialect Speech Transcription System for Sichuan–Chongqing Dialect",
+      "bullets": [
+        "Designed and implemented a high-accuracy speech transcription system using Paraformer-large (Alibaba ASR model) as the base framework, built from a ~29,000-utterance subset of the open-source KeSpeech dataset.",
+        "Proposed a partial-parameter-freezing fine-tuning strategy, freezing low-level acoustic modules and fine-tuning only high-level semantic layers, to mitigate overfitting under limited dialect data.",
+        "Reduced character error rate from 9.5% to 7.05% on KeSpeech and from 18.2% to 7.6% (58.2% relative reduction) on the WSC-Eval cross-corpus evaluation set; further reduced CER to 6.47% by integrating Qwen2-1.5B-Instruct as a post-correction module.",
+        "Built and deployed an interactive demo system (FastAPI, Gradio) achieving a real-time factor below 0.02 on an RTX 4090 GPU."
+      ]
+    },
+    {
+      "title": "Real-Time Illegal Content Detection in Livestream Video",
+      "bullets": [
+        "Designed and led development of a system to detect illegal behaviors (false advertising, exaggerated claims) in e-commerce livestreams by combining speech-to-text transcription with a BERT-based classification model.",
+        "Tested multiple data augmentation strategies to address training data scarcity, then applied domain-specific fine-tuning to improve detection accuracy and robustness."
+      ]
+    },
+    {
+      "title": "Vision-Guided Robotic Box-Handling System",
+      "bullets": [
+        "Contributed to a computer-vision-based robotic system (Atlas development board) for object recognition and automated box-handling.",
+        "Developed the communication module linking the Atlas board and the robot controller, enabling coordinated hardware–software control between the vision-recognition module and the robot's action execution."
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "title": "Dalian Hi-Think Computer Technology, Corp.",
+      "role": "Intern",
+      "date": "07/2024 – 09/2024",
+      "bullets": [
+        "Participated in development projects, attended project meetings and discussions, and tracked project progress and implementation plans under the guidance of senior engineers.",
+        "Involved in project verification and testing."
+      ]
+    },
+    {
+      "title": "Live Stream Illegal Activity Monitoring in Real-Time Using LLM",
+      "role": "Project Leader · University Innovation Project",
+      "date": "03/2025 – 03/2026",
+      "bullets": [
+        "Used large language models to identify illegal activities in live streams in real time and take action.",
+        "As project leader, handled project management and organization, wrote the core code, and participated in managing model training and testing."
+      ]
+    },
+    {
+      "title": "Development of Smart Robot and Task Execution System",
+      "role": "Robot Software Development",
+      "date": "07/2024 – 08/2024",
+      "bullets": [
+        "Set up the underlying hardware control and communication system based on the robot's built-in communication forwarding module.",
+        "Completed the design of basic hardware and software technical solutions, and guided team members to use the action editor to design and optimize basic and task-specific actions."
+      ]
+    }
+  ],
+  "awards": [
+    "Third Prize, “Challenge Cup” Competition, Dalian University of Technology (2023)",
+    "Third Prize, National English Competition for College Students (2024)"
+  ],
+  "skills": [
+    {
+      "name": "Research",
+      "items": [
+        "Natural Language Processing",
+        "Automatic Speech Recognition",
+        "Speech-Language Model Fine-Tuning"
+      ]
+    },
+    {
+      "name": "Programming",
+      "items": [
+        "Python",
+        "C"
+      ]
+    },
+    {
+      "name": "Frameworks & Tools",
+      "items": [
+        "PyTorch",
+        "Hugging Face Transformers",
+        "BERT",
+        "Paraformer",
+        "FastAPI",
+        "Gradio"
+      ]
+    },
+    {
+      "name": "Languages",
+      "items": [
+        "English (proficient)",
+        "Chinese (native)"
+      ]
+    }
+  ],
+  "publications": [
+    "CCL 2026"
+  ]
+}

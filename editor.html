@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页编辑器</title>
+  <style>
+    :root {
+      --accent: #2563eb;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --border: #d4dce6;
+      --soft: #fbfcfe;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #eef1f5;
+      color: var(--text);
+      font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 20;
+      background: #ffffff; border-bottom: 1px solid var(--border);
+      padding: 14px 22px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 1.15rem; margin: 0; letter-spacing: -0.2px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      font: inherit; cursor: pointer; border-radius: 9px;
+      padding: 9px 14px; border: 1px solid var(--border); background: #fff;
+      color: var(--text); transition: background 0.15s, border-color 0.15s;
+    }
+    button:hover { border-color: var(--accent); }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button.primary:hover { background: #1d4ed8; }
+    button.ghost { padding: 5px 10px; font-size: 0.82rem; }
+    button.danger { color: #c0392b; }
+    button.add {
+      width: 100%; border-style: dashed; color: var(--accent);
+      background: var(--soft); font-weight: 600;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 24px 18px 90px; }
+    .panel {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px; margin-bottom: 18px;
+    }
+    .panel h2 { margin: 0 0 14px; font-size: 1.05rem; }
+    label { display: block; margin-bottom: 12px; font-size: 0.88rem; color: #34404d; font-weight: 600; }
+    .sub-label { font-size: 0.88rem; color: #34404d; font-weight: 600; margin-bottom: 8px; }
+    input, textarea {
+      width: 100%; box-sizing: border-box; margin-top: 5px;
+      padding: 9px 11px; border: 1px solid var(--border); border-radius: 8px;
+      font: inherit; font-weight: 400; color: var(--text); background: #fff;
+    }
+    textarea { resize: vertical; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
+    .repeat-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
+    .repeat-item { border: 1px dashed var(--border); border-radius: 10px; padding: 12px 14px; background: var(--soft); }
+    .repeat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .num { color: #8a97a5; font-size: 0.8rem; font-weight: 700; }
+    .toast {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
+      background: #1c2733; color: #fff; padding: 10px 18px; border-radius: 999px;
+      opacity: 0; pointer-events: none; transition: all 0.25s ease; font-size: 0.9rem;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast.error { background: #c0392b; }
+    @media (max-width: 640px) {
+      .grid2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>个人主页编辑器</h1>
+    <div class="actions">
+      <button type="button" onclick="preview()">预览主页</button>
+      <button type="button" class="primary" onclick="save()">保存并生成</button>
+    </div>
+  </div>
+
+  <div class="wrap" id="app"></div>
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let state = {
+      name: "", roles: [], email: "", github: "", website: "", about: "",
+      interests: [],
+      education: [], projects: [], experience: [], awards: [], skills: [], publications: []
+    };
+
+    const $ = id => document.getElementById(id);
+
+    function escAttr(v) {
+      return String(v ?? "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function escText(v) {
+      return String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+    function toLines(arr) {
+      return Array.isArray(arr) ? arr.join("\n") : "";
+    }
+    function fromLines(text) {
+      return String(text ?? "").split("\n").map(s => s.trim()).filter(Boolean);
+    }
+    function section(title, inner) {
+      return `<section class="panel"><h2>${escText(title)}</h2>${inner}</section>`;
+    }
+
+    function render() {
+      const d = state;
+      let html = "";
+
+      let roles = '<div class="repeat-list">';
+      d.roles.forEach((r, i) => {
+        roles += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('roles', ${i})">删除</button></div>
+            <label>身份 / 头衔<input id="role_${i}" value="${escAttr(r)}"></label>
+          </div>`;
+      });
+      roles += '</div><button type="button" class="add" onclick="addRole()">+ 添加身份 / 头衔</button>';
+
+      html += section("基本信息", `
+        <div class="grid2">
+          <label>姓名<input id="f_name" value="${escAttr(d.name)}"></label>
+          <label>邮箱<input id="f_email" value="${escAttr(d.email)}"></label>
+          <label>GitHub 链接<input id="f_github" value="${escAttr(d.github)}" placeholder="https://github.com/你的用户名"></label>
+          <label>个人网站链接<input id="f_website" value="${escAttr(d.website)}" placeholder="https://..."></label>
+        </div>
+        <div class="sub-label">身份 / 头衔</div>${roles}
+        <label>关于我<textarea id="f_about" rows="4">${escText(d.about)}</textarea></label>
+      `);
+
+      html += section("研究方向 (Research Interests)", `<label>每行一个研究方向<textarea id="f_interests" rows="3">${escText(toLines(d.interests))}</textarea></label>`);
+
+      let edu = '<div class="repeat-list">';
+      d.education.forEach((e, i) => {
+        edu += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('education', ${i})">删除</button></div>
+            <div class="grid2">
+              <label>项目 / 学位名称<input id="edu_${i}_title" value="${escAttr(e.title)}"></label>
+              <label>时间<input id="edu_${i}_date" value="${escAttr(e.date)}"></label>
+              <label>学校 / 机构<input id="edu_${i}_sub" value="${escAttr(e.sub)}"></label>
+              <label>地点 / 备注<input id="edu_${i}_where" value="${escAttr(e.where)}"></label>
+            </div>
+          </div>`;
+      });
+      edu += '</div><button type="button" class="add" onclick="addEducation()">+ 添加教育经历</button>';
+      html += section("教育经历", edu);
+
+      let proj = '<div class="repeat-list">';
+      d.projects.forEach((p, i) => {
+        proj += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('projects', ${i})">删除</button></div>
+            <label>项目名称<input id="proj_${i}_title" value="${escAttr(p.title)}"></label>
+            <label>项目要点（每行一条）<textarea id="proj_${i}_bullets" rows="4">${escText(toLines(p.bullets))}</textarea></label>
+          </div>`;
+      });
+      proj += '</div><button type="button" class="add" onclick="addProject()">+ 添加研究项目</button>';
+      html += section("研究项目", proj);
+
+      let exp = '<div class="repeat-list">';
+      d.experience.forEach((e, i) => {
+        exp += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('experience', ${i})">删除</button></div>
+            <div class="grid2">
+              <label>单位 / 项目名称<input id="exp_${i}_title" value="${escAttr(e.title)}"></label>
+              <label>职位 / 角色<input id="exp_${i}_role" value="${escAttr(e.role)}"></label>
+            </div>
+            <label>时间<input id="exp_${i}_date" value="${escAttr(e.date)}"></label>
+            <label>主要职责（每行一条）<textarea id="exp_${i}_bullets" rows="3">${escText(toLines(e.bullets))}</textarea></label>
+          </div>`;
+      });
+      exp += '</div><button type="button" class="add" onclick="addExperience()">+ 添加工作 / 项目经历</button>';
+      html += section("工作 / 项目经历", exp);
+
+      html += section("荣誉与奖项", `<label>每行一个奖项<textarea id="f_awards" rows="3">${escText(toLines(d.awards))}</textarea></label>`);
+
+      let skills = '<div class="repeat-list">';
+      d.skills.forEach((s, i) => {
+        skills += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('skills', ${i})">删除</button></div>
+            <label>技能分类名称<input id="skill_${i}_name" value="${escAttr(s.name)}"></label>
+            <label>该分类下的技能（每行一个）<textarea id="skill_${i}_items" rows="3">${escText(toLines(s.items))}</textarea></label>
+          </div>`;
+      });
+      skills += '</div><button type="button" class="add" onclick="addSkill()">+ 添加技能分类</button>';
+      html += section("技能", skills);
+
+      html += section("发表 / 论文", `<label>每行一篇（标题或链接）<textarea id="f_publications" rows="3">${escText(toLines(d.publications))}</textarea></label>`);
+
+      $("app").innerHTML = html;
+    }
+
+    function collect() {
+      if (!state) return;
+      const val = id => $(id) ? $(id).value : "";
+      state.name = val("f_name");
+      state.email = val("f_email");
+      state.github = val("f_github").trim();
+      state.website = val("f_website").trim();
+      state.about = val("f_about");
+
+      state.roles.forEach((_, i) => { state.roles[i] = val(`role_${i}`); });
+      state.interests = fromLines(val("f_interests"));
+
+      state.education.forEach((e, i) => {
+        e.title = val(`edu_${i}_title`);
+        e.sub = val(`edu_${i}_sub`);
+        e.where = val(`edu_${i}_where`);
+        e.date = val(`edu_${i}_date`);
+      });
+      state.projects.forEach((p, i) => {
+        p.title = val(`proj_${i}_title`);
+        p.bullets = fromLines(val(`proj_${i}_bullets`));
+      });
+      state.experience.forEach((e, i) => {
+        e.title = val(`exp_${i}_title`);
+        e.role = val(`exp_${i}_role`);
+        e.date = val(`exp_${i}_date`);
+        e.bullets = fromLines(val(`exp_${i}_bullets`));
+      });
+      state.awards = fromLines(val("f_awards"));
+      state.skills.forEach((s, i) => {
+        s.name = val(`skill_${i}_name`);
+        s.items = fromLines(val(`skill_${i}_items`));
+      });
+      state.publications = fromLines(val("f_publications"));
+    }
+
+    function addRole() { collect(); state.roles.push(""); render(); }
+    function addEducation() { collect(); state.education.push({ title: "", sub: "", where: "", date: "" }); render(); }
+    function addProject() { collect(); state.projects.push({ title: "", bullets: [] }); render(); }
+    function addExperience() { collect(); state.experience.push({ title: "", role: "", date: "", bullets: [] }); render(); }
+    function addSkill() { collect(); state.skills.push({ name: "", items: [] }); render(); }
+    function removeAt(type, index) { collect(); state[type].splice(index, 1); render(); }
+
+    async function save() {
+      collect();
+      try {
+        const res = await fetch("/api/data", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(state)
+        });
+        const obj = await res.json();
+        if (obj.ok) { toast("已保存，主页已重新生成"); return true; }
+        toast("保存失败：" + (obj.error || res.status), true);
+        return false;
+      } catch (e) {
+        toast("保存失败：" + e.message, true);
+        return false;
+      }
+    }
+
+    async function preview() {
+      const ok = await save();
+      if (ok) window.open("/index.html?t=" + Date.now(), "_blank");
+    }
+
+    function toast(msg, isError = false) {
+      const el = $("toast");
+      el.textContent = msg;
+      el.className = "toast show" + (isError ? " error" : "");
+      clearTimeout(el._timer);
+      el._timer = setTimeout(() => { el.className = "toast"; }, 2500);
+    }
+
+    document.addEventListener("keydown", e => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        save();
+      }
+    });
+
+    async function load() {
+      const res = await fetch("/api/data");
+      state = await res.json();
+      render();
+    }
+
+    load();
+  </script>
+</body>
+</html>
