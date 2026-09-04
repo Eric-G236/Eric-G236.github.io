@@ -155,7 +155,7 @@ def render(data):
     photo = data.get("photo") or ""
     photo_path = os.path.join(BASE_DIR, photo) if photo else ""
     if photo and os.path.isfile(photo_path):
-        parts.append(f'<img src="{esc(photo)}" alt="{esc(name)}" style="width:200px;height:200px;border-radius:50%;object-fit:cover;">')
+        parts.append(f'<img src="{esc(photo)}" alt="{esc(name)}" style="width:200px;height:auto;border-radius:14px;display:block;">')
     else:
         parts.append('<div class="photo-slot">Photo</div>')
     parts.append("</div></header>")
