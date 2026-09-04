@@ -25,7 +25,7 @@
       "tag": "Trust & Safety · Project Leader · 03/2025 – 03/2026",
       "title": "Real-Time Detection of Illegal Content in Livestreams",
       "paragraphs": [
-        "I led the development of a system that combines speech-to-text transcription with a BERT-based classification model to detect illegal behaviors such as false advertising and exaggerated claims in e-commerce livestreams.",
+        "I led the development of a system that combines speech-to-text transcription with a BERT-based classification model to detect inappropriate business practices such as false advertising and exaggerated claims in e-commerce livestreams.",
         "To address scarce training data, I tested multiple data augmentation strategies and applied domain-specific fine-tuning to improve both accuracy and robustness."
       ]
     },
