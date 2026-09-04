@@ -6,8 +6,8 @@
   <title>个人主页编辑器</title>
   <style>
     :root {
-      --accent: #2563eb;
-      --text: #1a1a1a;
+      --accent: #0f766e;
+      --text: #1f2937;
       --muted: #6b7280;
       --border: #d4dce6;
       --soft: #fbfcfe;
@@ -36,33 +36,28 @@
     }
     button:hover { border-color: var(--accent); }
     button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-    button.primary:hover { background: #1d4ed8; }
+    button.primary:hover { background: #0b5f57; }
     button.ghost { padding: 5px 10px; font-size: 0.82rem; }
     button.danger { color: #c0392b; }
-    button.add {
-      width: 100%; border-style: dashed; color: var(--accent);
-      background: var(--soft); font-weight: 600;
-    }
+    button.add { width: 100%; border-style: dashed; color: var(--accent); background: var(--soft); font-weight: 600; }
     .wrap { max-width: 880px; margin: 0 auto; padding: 24px 18px 90px; }
-    .panel {
-      background: #fff; border: 1px solid var(--border);
-      border-radius: 14px; padding: 18px 20px; margin-bottom: 18px;
-    }
+    .panel { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin-bottom: 18px; }
     .panel h2 { margin: 0 0 14px; font-size: 1.05rem; }
     label { display: block; margin-bottom: 12px; font-size: 0.88rem; color: #34404d; font-weight: 600; }
     .sub-label { font-size: 0.88rem; color: #34404d; font-weight: 600; margin-bottom: 8px; }
-    input, textarea {
+    input, textarea, select {
       width: 100%; box-sizing: border-box; margin-top: 5px;
       padding: 9px 11px; border: 1px solid var(--border); border-radius: 8px;
       font: inherit; font-weight: 400; color: var(--text); background: #fff;
     }
     textarea { resize: vertical; }
-    input:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12); }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12); }
     .grid2 { display: grid; grid-template-columns: 1fr 1fr; column-gap: 14px; }
     .repeat-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 10px; }
     .repeat-item { border: 1px dashed var(--border); border-radius: 10px; padding: 12px 14px; background: var(--soft); }
     .repeat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .num { color: #8a97a5; font-size: 0.8rem; font-weight: 700; }
+    .hint { color: var(--muted); font-size: 0.78rem; font-weight: 400; margin-top: 4px; }
     .toast {
       position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
       background: #1c2733; color: #fff; padding: 10px 18px; border-radius: 999px;
@@ -70,9 +65,7 @@
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.error { background: #c0392b; }
-    @media (max-width: 640px) {
-      .grid2 { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -89,9 +82,9 @@
 
   <script>
     let state = {
-      name: "", roles: [], email: "", github: "", website: "", about: "",
-      interests: [],
-      education: [], projects: [], experience: [], awards: [], skills: [], publications: []
+      name: "", roles: [], photo: "", email: "", github: "", website: "", about: "",
+      news: [], research: [], aims: [], timeline: [], publications: [], awards: [],
+      life_title: "", life_text: ""
     };
 
     const $ = id => document.getElementById(id);
@@ -102,15 +95,11 @@
     function escText(v) {
       return String(v ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     }
-    function toLines(arr) {
-      return Array.isArray(arr) ? arr.join("\n") : "";
-    }
-    function fromLines(text) {
-      return String(text ?? "").split("\n").map(s => s.trim()).filter(Boolean);
-    }
-    function section(title, inner) {
-      return `<section class="panel"><h2>${escText(title)}</h2>${inner}</section>`;
-    }
+    function toLines(arr) { return Array.isArray(arr) ? arr.join("\n") : ""; }
+    function fromLines(text) { return String(text ?? "").split("\n").map(s => s.trim()).filter(Boolean); }
+    function toParagraphs(arr) { return Array.isArray(arr) ? arr.join("\n\n") : ""; }
+    function fromParagraphs(text) { return String(text ?? "").split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); }
+    function section(title, inner) { return `<section class="panel"><h2>${escText(title)}</h2>${inner}</section>`; }
 
     function render() {
       const d = state;
@@ -118,11 +107,7 @@
 
       let roles = '<div class="repeat-list">';
       d.roles.forEach((r, i) => {
-        roles += `
-          <div class="repeat-item">
-            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('roles', ${i})">删除</button></div>
-            <label>身份 / 头衔<input id="role_${i}" value="${escAttr(r)}"></label>
-          </div>`;
+        roles += `<div class="repeat-item"><div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('roles', ${i})">删除</button></div><label>身份 / 头衔<input id="role_${i}" value="${escAttr(r)}"></label></div>`;
       });
       roles += '</div><button type="button" class="add" onclick="addRole()">+ 添加身份 / 头衔</button>';
 
@@ -130,74 +115,66 @@
         <div class="grid2">
           <label>姓名<input id="f_name" value="${escAttr(d.name)}"></label>
           <label>邮箱<input id="f_email" value="${escAttr(d.email)}"></label>
-          <label>GitHub 链接<input id="f_github" value="${escAttr(d.github)}" placeholder="https://github.com/你的用户名"></label>
-          <label>个人网站链接<input id="f_website" value="${escAttr(d.website)}" placeholder="https://..."></label>
+          <label>GitHub 链接<input id="f_github" value="${escAttr(d.github)}" placeholder="https://github.com/..."></label>
+          <label>个人主页链接<input id="f_website" value="${escAttr(d.website)}" placeholder="https://..."></label>
         </div>
+        <label>照片文件名（可选，放在同目录）<input id="f_photo" value="${escAttr(d.photo)}" placeholder="例如 photo.jpg"></label>
         <div class="sub-label">身份 / 头衔</div>${roles}
         <label>关于我<textarea id="f_about" rows="4">${escText(d.about)}</textarea></label>
       `);
 
-      html += section("研究方向 (Research Interests)", `<label>每行一个研究方向<textarea id="f_interests" rows="3">${escText(toLines(d.interests))}</textarea></label>`);
+      html += section("News", `<label>每行一条动态<textarea id="f_news" rows="3">${escText(toLines(d.news))}</textarea></label>`);
 
-      let edu = '<div class="repeat-list">';
-      d.education.forEach((e, i) => {
-        edu += `
+      let research = '<div class="repeat-list">';
+      d.research.forEach((r, i) => {
+        research += `
           <div class="repeat-item">
-            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('education', ${i})">删除</button></div>
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('research', ${i})">删除</button></div>
+            <label>标签（Tag）<input id="research_${i}_tag" value="${escAttr(r.tag)}"></label>
+            <label>标题<input id="research_${i}_title" value="${escAttr(r.title)}"></label>
+            <label>正文段落<textarea id="research_${i}_paragraphs" rows="5">${escText(toParagraphs(r.paragraphs))}</textarea><div class="hint">段落之间用空行分隔</div></label>
+          </div>`;
+      });
+      research += '</div><button type="button" class="add" onclick="addResearch()">+ 添加研究主题</button>';
+      html += section("Research", research);
+
+      let aims = '<div class="repeat-list">';
+      d.aims.forEach((a, i) => {
+        aims += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('aims', ${i})">删除</button></div>
+            <label>标题<input id="aim_${i}_title" value="${escAttr(a.title)}"></label>
+            <label>内容<textarea id="aim_${i}_text" rows="2">${escText(a.text)}</textarea></label>
+          </div>`;
+      });
+      aims += '</div><button type="button" class="add" onclick="addAim()">+ 添加方向</button>';
+      html += section("What I Care About", aims);
+
+      let timeline = '<div class="repeat-list">';
+      d.timeline.forEach((t, i) => {
+        const eduSel = t.type === "Education" ? "selected" : "";
+        const expSel = t.type === "Experience" ? "selected" : "";
+        timeline += `
+          <div class="repeat-item">
+            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('timeline', ${i})">删除</button></div>
             <div class="grid2">
-              <label>项目 / 学位名称<input id="edu_${i}_title" value="${escAttr(e.title)}"></label>
-              <label>时间<input id="edu_${i}_date" value="${escAttr(e.date)}"></label>
-              <label>学校 / 机构<input id="edu_${i}_sub" value="${escAttr(e.sub)}"></label>
-              <label>地点 / 备注<input id="edu_${i}_where" value="${escAttr(e.where)}"></label>
+              <label>日期<input id="tl_${i}_date" value="${escAttr(t.date)}" placeholder="例如 09/2026 – 06/2027"></label>
+              <label>类型<select id="tl_${i}_type"><option value="Education" ${eduSel}>Education</option><option value="Experience" ${expSel}>Experience</option></select></label>
             </div>
+            <label>标题<input id="tl_${i}_title" value="${escAttr(t.title)}"></label>
+            <label>学校 / 机构<input id="tl_${i}_sub" value="${escAttr(t.sub)}"></label>
+            <label>说明<textarea id="tl_${i}_desc" rows="2">${escText(t.desc)}</textarea></label>
           </div>`;
       });
-      edu += '</div><button type="button" class="add" onclick="addEducation()">+ 添加教育经历</button>';
-      html += section("教育经历", edu);
+      timeline += '</div><button type="button" class="add" onclick="addTimeline()">+ 添加时间线</button>';
+      html += section("Timeline", timeline);
 
-      let proj = '<div class="repeat-list">';
-      d.projects.forEach((p, i) => {
-        proj += `
-          <div class="repeat-item">
-            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('projects', ${i})">删除</button></div>
-            <label>项目名称<input id="proj_${i}_title" value="${escAttr(p.title)}"></label>
-            <label>项目要点（每行一条）<textarea id="proj_${i}_bullets" rows="4">${escText(toLines(p.bullets))}</textarea></label>
-          </div>`;
-      });
-      proj += '</div><button type="button" class="add" onclick="addProject()">+ 添加研究项目</button>';
-      html += section("研究项目", proj);
-
-      let exp = '<div class="repeat-list">';
-      d.experience.forEach((e, i) => {
-        exp += `
-          <div class="repeat-item">
-            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('experience', ${i})">删除</button></div>
-            <div class="grid2">
-              <label>单位 / 项目名称<input id="exp_${i}_title" value="${escAttr(e.title)}"></label>
-              <label>职位 / 角色<input id="exp_${i}_role" value="${escAttr(e.role)}"></label>
-            </div>
-            <label>时间<input id="exp_${i}_date" value="${escAttr(e.date)}"></label>
-            <label>主要职责（每行一条）<textarea id="exp_${i}_bullets" rows="3">${escText(toLines(e.bullets))}</textarea></label>
-          </div>`;
-      });
-      exp += '</div><button type="button" class="add" onclick="addExperience()">+ 添加工作 / 项目经历</button>';
-      html += section("工作 / 项目经历", exp);
-
-      html += section("荣誉与奖项", `<label>每行一个奖项<textarea id="f_awards" rows="3">${escText(toLines(d.awards))}</textarea></label>`);
-
-      let skills = '<div class="repeat-list">';
-      d.skills.forEach((s, i) => {
-        skills += `
-          <div class="repeat-item">
-            <div class="repeat-head"><span class="num">#${i + 1}</span><button type="button" class="ghost danger" onclick="removeAt('skills', ${i})">删除</button></div>
-            <label>技能分类名称<input id="skill_${i}_name" value="${escAttr(s.name)}"></label>
-            <label>该分类下的技能（每行一个）<textarea id="skill_${i}_items" rows="3">${escText(toLines(s.items))}</textarea></label>
-          </div>`;
-      });
-      skills += '</div><button type="button" class="add" onclick="addSkill()">+ 添加技能分类</button>';
-      html += section("技能", skills);
-
-      html += section("发表 / 论文", `<label>每行一篇（标题或链接）<textarea id="f_publications" rows="3">${escText(toLines(d.publications))}</textarea></label>`);
+      html += section("Publications", `<label>每行一篇<textarea id="f_publications" rows="2">${escText(toLines(d.publications))}</textarea></label>`);
+      html += section("Awards", `<label>每行一个奖项<textarea id="f_awards" rows="3">${escText(toLines(d.awards))}</textarea></label>`);
+      html += section("Beyond Research", `
+        <label>标题<input id="f_life_title" value="${escAttr(d.life_title)}"></label>
+        <label>内容<textarea id="f_life_text" rows="5">${escText(d.life_text)}</textarea></label>
+      `);
 
       $("app").innerHTML = html;
     }
@@ -209,58 +186,48 @@
       state.email = val("f_email");
       state.github = val("f_github").trim();
       state.website = val("f_website").trim();
+      state.photo = val("f_photo").trim();
       state.about = val("f_about");
+      state.news = fromLines(val("f_news"));
+      state.publications = fromLines(val("f_publications"));
+      state.awards = fromLines(val("f_awards"));
+      state.life_title = val("f_life_title");
+      state.life_text = val("f_life_text");
 
       state.roles.forEach((_, i) => { state.roles[i] = val(`role_${i}`); });
-      state.interests = fromLines(val("f_interests"));
-
-      state.education.forEach((e, i) => {
-        e.title = val(`edu_${i}_title`);
-        e.sub = val(`edu_${i}_sub`);
-        e.where = val(`edu_${i}_where`);
-        e.date = val(`edu_${i}_date`);
+      state.research.forEach((r, i) => {
+        r.tag = val(`research_${i}_tag`);
+        r.title = val(`research_${i}_title`);
+        r.paragraphs = fromParagraphs(val(`research_${i}_paragraphs`));
       });
-      state.projects.forEach((p, i) => {
-        p.title = val(`proj_${i}_title`);
-        p.bullets = fromLines(val(`proj_${i}_bullets`));
+      state.aims.forEach((a, i) => {
+        a.title = val(`aim_${i}_title`);
+        a.text = val(`aim_${i}_text`);
       });
-      state.experience.forEach((e, i) => {
-        e.title = val(`exp_${i}_title`);
-        e.role = val(`exp_${i}_role`);
-        e.date = val(`exp_${i}_date`);
-        e.bullets = fromLines(val(`exp_${i}_bullets`));
+      state.timeline.forEach((t, i) => {
+        t.date = val(`tl_${i}_date`);
+        t.type = val(`tl_${i}_type`);
+        t.title = val(`tl_${i}_title`);
+        t.sub = val(`tl_${i}_sub`);
+        t.desc = val(`tl_${i}_desc`);
       });
-      state.awards = fromLines(val("f_awards"));
-      state.skills.forEach((s, i) => {
-        s.name = val(`skill_${i}_name`);
-        s.items = fromLines(val(`skill_${i}_items`));
-      });
-      state.publications = fromLines(val("f_publications"));
     }
 
     function addRole() { collect(); state.roles.push(""); render(); }
-    function addEducation() { collect(); state.education.push({ title: "", sub: "", where: "", date: "" }); render(); }
-    function addProject() { collect(); state.projects.push({ title: "", bullets: [] }); render(); }
-    function addExperience() { collect(); state.experience.push({ title: "", role: "", date: "", bullets: [] }); render(); }
-    function addSkill() { collect(); state.skills.push({ name: "", items: [] }); render(); }
+    function addResearch() { collect(); state.research.push({ tag: "", title: "", paragraphs: [] }); render(); }
+    function addAim() { collect(); state.aims.push({ title: "", text: "" }); render(); }
+    function addTimeline() { collect(); state.timeline.push({ date: "", type: "Education", title: "", sub: "", desc: "" }); render(); }
     function removeAt(type, index) { collect(); state[type].splice(index, 1); render(); }
 
     async function save() {
       collect();
       try {
-        const res = await fetch("/api/data", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(state)
-        });
+        const res = await fetch("/api/data", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state) });
         const obj = await res.json();
         if (obj.ok) { toast("已保存，主页已重新生成"); return true; }
         toast("保存失败：" + (obj.error || res.status), true);
         return false;
-      } catch (e) {
-        toast("保存失败：" + e.message, true);
-        return false;
-      }
+      } catch (e) { toast("保存失败：" + e.message, true); return false; }
     }
 
     async function preview() {
@@ -277,10 +244,7 @@
     }
 
     document.addEventListener("keydown", e => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
-        e.preventDefault();
-        save();
-      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); save(); }
     });
 
     async function load() {

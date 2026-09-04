@@ -2,131 +2,92 @@
   "name": "Ke Gong",
   "roles": [
     "BSc. in Computer Science, Dalian University of Technology",
-    "GAPP Student, UC Santa Barbara"
+    "Incoming Graduate Student, UC Santa Barbara"
   ],
   "email": "kgong@ucsb.edu",
-  "github": "",
-  "website": "",
-  "about": "Ke Gong received his BSc. in Computer Science from Dalian University of Technology and will start the Graduate Academic Preparation Program (GAPP) at UC Santa Barbara in September 2026. His research interests include natural language processing and automatic speech recognition.",
-  "interests": [
-    "Natural Language Processing",
-    "Automatic Speech Recognition",
-    "Speech-Language Model Fine-Tuning"
+  "github": "https://github.com/Eric-G236",
+  "website": "https://eric-g236.github.io/",
+  "photo": "",
+  "about": "I am a recent Computer Science graduate from Dalian University of Technology and an incoming graduate student at UC Santa Barbara. My work sits at the intersection of natural language processing and automatic speech recognition — I enjoy building systems that help machines understand human language in real, sometimes messy, settings.",
+  "news": [
+    "I am currently in Santa Barbara and actively looking for research opportunities (RA positions)."
   ],
-  "education": [
+  "research": [
     {
+      "tag": "Speech & Low-Resource Dialects",
+      "title": "Speech Transcription for the Sichuan–Chongqing Dialect",
+      "paragraphs": [
+        "I designed a high-accuracy speech transcription system using Paraformer-large as the base model, built on a ~29,000-utterance subset of the KeSpeech dataset. To handle limited dialect data, I proposed a partial-parameter-freezing fine-tuning strategy that freezes low-level acoustic modules and fine-tunes only high-level semantic layers.",
+        "This reduced the character error rate from 9.5% to 7.05% on KeSpeech, and from 18.2% to 7.6% on the cross-corpus WSC-Eval set. Adding Qwen2-1.5B-Instruct as a post-correction module further lowered CER to 6.47%, and I deployed an interactive demo with FastAPI and Gradio that runs with a real-time factor below 0.02 on an RTX 4090."
+      ]
+    },
+    {
+      "tag": "Trust & Safety · Project Leader · 03/2025 – 03/2026",
+      "title": "Real-Time Detection of Illegal Content in Livestreams",
+      "paragraphs": [
+        "I led the development of a system that combines speech-to-text transcription with a BERT-based classification model to detect illegal behaviors such as false advertising and exaggerated claims in e-commerce livestreams.",
+        "To address scarce training data, I tested multiple data augmentation strategies and applied domain-specific fine-tuning to improve both accuracy and robustness."
+      ]
+    },
+    {
+      "tag": "Vision & Robotics · Robot Software Development · 07/2024 – 08/2024",
+      "title": "Vision-Guided Robotic Box-Handling",
+      "paragraphs": [
+        "I contributed to a computer-vision-based robotic system for object recognition and automated box-handling on an Atlas development board, and developed the communication module that connects the vision-recognition module with the robot controller."
+      ]
+    }
+  ],
+  "aims": [
+    {
+      "title": "Language Accessibility",
+      "text": "Making speech technology work for underrepresented dialects and languages, not only for well-resourced ones."
+    },
+    {
+      "title": "Safer Online Information",
+      "text": "Building tools that help detect misleading or harmful content in real time."
+    },
+    {
+      "title": "Language and Machines",
+      "text": "Exploring how perception and language help machines interact with the physical world."
+    }
+  ],
+  "timeline": [
+    {
+      "date": "09/2026 – 06/2027",
+      "type": "Education",
       "title": "Graduate Academic Preparation Program (GAPP)",
-      "sub": "University of California, Santa Barbara",
-      "where": "Santa Barbara, US · Incoming",
-      "date": "09/2026 – 06/2027"
+      "sub": "UC Santa Barbara",
+      "desc": "Santa Barbara, US · Incoming"
     },
     {
-      "title": "BSc. in Computer Science",
-      "sub": "Dalian University of Technology",
-      "where": "Dalian, China",
-      "date": "09/2022 – 06/2026"
-    },
-    {
+      "date": "02/2025 – 03/2025",
+      "type": "Education",
       "title": "Exchange Student",
       "sub": "University of Cambridge",
-      "where": "Cambridge, UK",
-      "date": "02/2025 – 03/2025"
-    }
-  ],
-  "projects": [
-    {
-      "title": "Dialect Speech Transcription System for Sichuan–Chongqing Dialect",
-      "bullets": [
-        "Designed and implemented a high-accuracy speech transcription system using Paraformer-large (Alibaba ASR model) as the base framework, built from a ~29,000-utterance subset of the open-source KeSpeech dataset.",
-        "Proposed a partial-parameter-freezing fine-tuning strategy, freezing low-level acoustic modules and fine-tuning only high-level semantic layers, to mitigate overfitting under limited dialect data.",
-        "Reduced character error rate from 9.5% to 7.05% on KeSpeech and from 18.2% to 7.6% (58.2% relative reduction) on the WSC-Eval cross-corpus evaluation set; further reduced CER to 6.47% by integrating Qwen2-1.5B-Instruct as a post-correction module.",
-        "Built and deployed an interactive demo system (FastAPI, Gradio) achieving a real-time factor below 0.02 on an RTX 4090 GPU."
-      ]
+      "desc": "Cambridge, UK"
     },
     {
-      "title": "Real-Time Illegal Content Detection in Livestream Video",
-      "bullets": [
-        "Designed and led development of a system to detect illegal behaviors (false advertising, exaggerated claims) in e-commerce livestreams by combining speech-to-text transcription with a BERT-based classification model.",
-        "Tested multiple data augmentation strategies to address training data scarcity, then applied domain-specific fine-tuning to improve detection accuracy and robustness."
-      ]
-    },
-    {
-      "title": "Vision-Guided Robotic Box-Handling System",
-      "bullets": [
-        "Contributed to a computer-vision-based robotic system (Atlas development board) for object recognition and automated box-handling.",
-        "Developed the communication module linking the Atlas board and the robot controller, enabling coordinated hardware–software control between the vision-recognition module and the robot's action execution."
-      ]
-    }
-  ],
-  "experience": [
-    {
-      "title": "Dalian Hi-Think Computer Technology, Corp.",
-      "role": "Intern",
       "date": "07/2024 – 09/2024",
-      "bullets": [
-        "Participated in development projects, attended project meetings and discussions, and tracked project progress and implementation plans under the guidance of senior engineers.",
-        "Involved in project verification and testing."
-      ]
+      "type": "Experience",
+      "title": "Intern, Dalian Hi-Think Computer Technology",
+      "sub": "",
+      "desc": "Development, testing, and project tracking under senior engineers."
     },
     {
-      "title": "Live Stream Illegal Activity Monitoring in Real-Time Using LLM",
-      "role": "Project Leader · University Innovation Project",
-      "date": "03/2025 – 03/2026",
-      "bullets": [
-        "Used large language models to identify illegal activities in live streams in real time and take action.",
-        "As project leader, handled project management and organization, wrote the core code, and participated in managing model training and testing."
-      ]
-    },
-    {
-      "title": "Development of Smart Robot and Task Execution System",
-      "role": "Robot Software Development",
-      "date": "07/2024 – 08/2024",
-      "bullets": [
-        "Set up the underlying hardware control and communication system based on the robot's built-in communication forwarding module.",
-        "Completed the design of basic hardware and software technical solutions, and guided team members to use the action editor to design and optimize basic and task-specific actions."
-      ]
+      "date": "09/2022 – 06/2026",
+      "type": "Education",
+      "title": "BSc. in Computer Science",
+      "sub": "Dalian University of Technology",
+      "desc": "Dalian, China"
     }
+  ],
+  "publications": [
+    "CCL 2026"
   ],
   "awards": [
     "Third Prize, “Challenge Cup” Competition, Dalian University of Technology (2023)",
     "Third Prize, National English Competition for College Students (2024)"
   ],
-  "skills": [
-    {
-      "name": "Research",
-      "items": [
-        "Natural Language Processing",
-        "Automatic Speech Recognition",
-        "Speech-Language Model Fine-Tuning"
-      ]
-    },
-    {
-      "name": "Programming",
-      "items": [
-        "Python",
-        "C"
-      ]
-    },
-    {
-      "name": "Frameworks & Tools",
-      "items": [
-        "PyTorch",
-        "Hugging Face Transformers",
-        "BERT",
-        "Paraformer",
-        "FastAPI",
-        "Gradio"
-      ]
-    },
-    {
-      "name": "Languages",
-      "items": [
-        "English (proficient)",
-        "Chinese (native)"
-      ]
-    }
-  ],
-  "publications": [
-    "CCL 2026"
-  ]
+  "life_title": "From Chemical Engineering to Computer Science",
+  "life_text": "I started university in chemical engineering. As I took more programming and language-related courses, I found myself increasingly drawn to how machines understand and generate human language, so I switched to computer science. That decision has shaped the work I do today."
 }

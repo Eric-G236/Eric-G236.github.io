@@ -1,317 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ke Gong · Personal Homepage</title>
-  <meta name="description" content="Ke Gong — Computer Science, NLP and Speech.">
-  <style>
-    :root {
-      --bg: #fbfaf8;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --accent: #0f766e;
-      --accent-soft: #e6f2f0;
-      --border: #e6e2da;
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(31, 41, 55, 0.06);
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
-
-    nav {
-      position: sticky; top: 0; z-index: 20;
-      background: rgba(251, 250, 248, 0.88);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 60px; gap: 16px;
-    }
-    .brand { font-weight: 700; letter-spacing: -0.2px; color: var(--text); }
-    .nav-links { display: flex; gap: 20px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
-    .nav-links a { color: var(--muted); font-size: 0.94rem; }
-    .nav-links a:hover { color: var(--accent); }
-
-    .hero { padding: 64px 0 34px; }
-    .hero-grid { display: grid; grid-template-columns: 1fr 220px; gap: 36px; align-items: center; }
-    .hero h1 { font-size: clamp(2.3rem, 6vw, 3.4rem); margin: 0 0 14px; letter-spacing: -1px; }
-    .hero .roles { color: var(--muted); margin-bottom: 18px; }
-    .hero .roles div { margin-bottom: 2px; }
-    .hero-contact { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.95rem; }
-    .photo-slot {
-      width: 200px; height: 200px; border: 1px dashed var(--border); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); background: var(--card);
-    }
-
-    section { padding: 38px 0 8px; }
-    .section-head { margin-bottom: 22px; }
-    .section-head h2 { font-size: 1.65rem; margin: 0; letter-spacing: -0.3px; }
-    .section-head .lead { color: var(--muted); margin: 8px 0 0; max-width: 760px; }
-
-    .intro {
-      font-size: 1.05rem; max-width: 860px;
-    }
-
-    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .card {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 20px 22px; box-shadow: var(--shadow);
-    }
-    .card h3 { margin: 0 0 9px; font-size: 1.04rem; letter-spacing: -0.1px; }
-    .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-
-    .research-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    .research-card { padding: 22px 24px; }
-    .research-card .tag { color: var(--accent); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
-    .research-card h3 { font-size: 1.18rem; margin: 6px 0 10px; }
-    .research-card p { color: var(--muted); margin: 0 0 10px; }
-
-    .timeline { border-left: 2px solid var(--border); padding-left: 24px; }
-    .timeline-item { position: relative; margin-bottom: 22px; }
-    .timeline-item::before {
-      content: ""; position: absolute; left: -31px; top: 7px;
-      width: 10px; height: 10px; border-radius: 50%; background: var(--accent);
-    }
-    .timeline-date { color: var(--muted); font-size: 0.86rem; }
-    .timeline-title { font-weight: 700; }
-    .timeline-sub { color: var(--accent); font-weight: 600; font-size: 0.94rem; }
-    .timeline-desc { color: var(--muted); font-size: 0.94rem; }
-
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
-    .contact-box {
-      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-      padding: 28px 26px; text-align: center; box-shadow: var(--shadow);
-    }
-    .contact-box h2 { margin-top: 0; }
-    .contact-box p { color: var(--muted); margin: 8px 0 0; }
-
-    footer {
-      margin-top: 50px; padding: 28px 0 44px; text-align: center;
-      color: var(--muted); border-top: 1px solid var(--border);
-    }
-
-    @media (max-width: 760px) {
-      .hero-grid { grid-template-columns: 1fr; }
-      .cards { grid-template-columns: 1fr; }
-      .two-col { grid-template-columns: 1fr; }
-      .photo-slot { width: 140px; height: 140px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ke Gong · Personal Homepage</title>
+<meta name="description" content="Personal homepage of Ke Gong.">
+<style>
+:root {
+  --bg: #fbfaf8;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #0f766e;
+  --accent-soft: #e6f2f0;
+  --border: #e6e2da;
+  --radius: 16px;
+  --shadow: 0 10px 30px rgba(31, 41, 55, 0.06);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
+nav {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(251, 250, 248, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; gap: 16px; }
+.brand { font-weight: 700; letter-spacing: -0.2px; color: var(--text); }
+.nav-links { display: flex; gap: 20px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
+.nav-links a { color: var(--muted); font-size: 0.94rem; }
+.nav-links a:hover { color: var(--accent); }
+.hero { padding: 64px 0 34px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 220px; gap: 36px; align-items: center; }
+.hero h1 { font-size: clamp(2.3rem, 6vw, 3.4rem); margin: 0 0 14px; letter-spacing: -1px; }
+.hero .roles { color: var(--muted); margin-bottom: 18px; }
+.hero .roles div { margin-bottom: 2px; }
+.hero-contact { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.95rem; }
+.photo-slot {
+  width: 200px; height: 200px; border: 1px dashed var(--border); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); background: var(--card);
+}
+section { padding: 38px 0 8px; }
+.section-head { margin-bottom: 22px; }
+.section-head h2 { font-size: 1.65rem; margin: 0; letter-spacing: -0.3px; }
+.section-head .lead { color: var(--muted); margin: 8px 0 0; max-width: 760px; }
+.intro { font-size: 1.05rem; max-width: 860px; }
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 20px 22px; box-shadow: var(--shadow);
+}
+.card h3 { margin: 0 0 9px; font-size: 1.04rem; letter-spacing: -0.1px; }
+.card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+.research-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.research-card { padding: 22px 24px; }
+.research-card .tag { color: var(--accent); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.research-card h3 { font-size: 1.18rem; margin: 6px 0 10px; }
+.research-card p { color: var(--muted); margin: 0 0 10px; }
+.timeline { border-left: 2px solid var(--border); padding-left: 24px; }
+.timeline-item { position: relative; margin-bottom: 22px; }
+.timeline-item::before { content: ""; position: absolute; left: -31px; top: 7px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.timeline-date { color: var(--muted); font-size: 0.86rem; }
+.timeline-title { font-weight: 700; }
+.timeline-sub { color: var(--accent); font-weight: 600; font-size: 0.94rem; }
+.timeline-desc { color: var(--muted); font-size: 0.94rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.contact-box {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 26px; text-align: center; box-shadow: var(--shadow);
+}
+.contact-box h2 { margin-top: 0; }
+.contact-box p { color: var(--muted); margin: 8px 0 0; }
+footer { margin-top: 50px; padding: 28px 0 44px; text-align: center; color: var(--muted); border-top: 1px solid var(--border); }
+@media (max-width: 760px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .cards { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .photo-slot { width: 140px; height: 140px; }
+}
+</style>
 </head>
 <body>
-  <nav>
-    <div class="wrap nav-inner">
-      <span class="brand">Ke Gong</span>
-      <ul class="nav-links">
-        <li><a href="#news">News</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#research">Research</a></li>
-        <li><a href="#timeline">Timeline</a></li>
-        <li><a href="#life">Life</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
-
-  <header class="hero wrap">
-    <div class="hero-grid">
-      <div>
-        <h1>Ke Gong</h1>
-        <div class="roles">
-          <div>BSc. in Computer Science, Dalian University of Technology</div>
-          <div>Incoming Graduate Student, UC Santa Barbara</div>
-        </div>
-        <div class="hero-contact">
-          <a href="mailto:kgong@ucsb.edu">kgong@ucsb.edu</a>
-          <a href="https://github.com/Eric-G236" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://eric-g236.github.io/" target="_blank" rel="noopener">Homepage</a>
-        </div>
-      </div>
-      <!-- 照片预留：把照片放到本文件夹并命名为 photo.jpg，再把下面注释换成 img -->
-      <div class="photo-slot">Photo</div>
-    </div>
-  </header>
-
-  <main>
-    <section id="news" class="wrap">
-      <div class="section-head">
-        <h2>News</h2>
-      </div>
-      <div class="card">
-        <p style="margin:0">I am currently in Santa Barbara and actively looking for research opportunities (RA positions).</p>
-      </div>
-    </section>
-
-    <section id="about" class="wrap">
-      <div class="section-head">
-        <h2>About</h2>
-      </div>
-      <p class="intro">
-        I am a recent Computer Science graduate from Dalian University of Technology and an incoming
-        graduate student at UC Santa Barbara. My work sits at the intersection of natural language
-        processing and automatic speech recognition — I enjoy building systems that help machines
-        understand human language in real, sometimes messy, settings.
-      </p>
-    </section>
-
-    <section id="research" class="wrap">
-      <div class="section-head">
-        <h2>Research</h2>
-        <p class="lead">A few problems I have been thinking about and working on.</p>
-      </div>
-      <div class="research-grid">
-        <div class="card research-card">
-          <div class="tag">Speech &amp; Low-Resource Dialects</div>
-          <h3>Speech Transcription for the Sichuan–Chongqing Dialect</h3>
-          <p>
-            I designed a high-accuracy speech transcription system using Paraformer-large as the base
-            model, built on a ~29,000-utterance subset of the KeSpeech dataset. To handle limited
-            dialect data, I proposed a partial-parameter-freezing fine-tuning strategy that freezes
-            low-level acoustic modules and fine-tunes only high-level semantic layers.
-          </p>
-          <p>
-            This reduced the character error rate from 9.5% to 7.05% on KeSpeech, and from 18.2% to
-            7.6% on the cross-corpus WSC-Eval set. Adding Qwen2-1.5B-Instruct as a post-correction
-            module further lowered CER to 6.47%, and I deployed an interactive demo with FastAPI and
-            Gradio that runs with a real-time factor below 0.02 on an RTX 4090.
-          </p>
-        </div>
-
-        <div class="card research-card">
-          <div class="tag">Trust &amp; Safety · Project Leader · 03/2025 – 03/2026</div>
-          <h3>Real-Time Detection of Illegal Content in Livestreams</h3>
-          <p>
-            I led the development of a system that combines speech-to-text transcription with a
-            BERT-based classification model to detect illegal behaviors such as false advertising and
-            exaggerated claims in e-commerce livestreams.
-          </p>
-          <p>
-            To address scarce training data, I tested multiple data augmentation strategies and applied
-            domain-specific fine-tuning to improve both accuracy and robustness.
-          </p>
-        </div>
-
-        <div class="card research-card">
-          <div class="tag">Vision &amp; Robotics · Robot Software Development · 07/2024 – 08/2024</div>
-          <h3>Vision-Guided Robotic Box-Handling</h3>
-          <p>
-            I contributed to a computer-vision-based robotic system for object recognition and automated
-            box-handling on an Atlas development board, and developed the communication module that
-            connects the vision-recognition module with the robot controller.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="aims" class="wrap">
-      <div class="section-head">
-        <h2>What I Care About</h2>
-      </div>
-      <div class="cards">
-        <div class="card">
-          <h3>Language Accessibility</h3>
-          <p>Making speech technology work for underrepresented dialects and languages, not only for well-resourced ones.</p>
-        </div>
-        <div class="card">
-          <h3>Safer Online Information</h3>
-          <p>Building tools that help detect misleading or harmful content in real time.</p>
-        </div>
-        <div class="card">
-          <h3>Language and Machines</h3>
-          <p>Exploring how perception and language help machines interact with the physical world.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="timeline" class="wrap">
-      <div class="section-head">
-        <h2>Timeline</h2>
-      </div>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-date">09/2026 – 06/2027 · Education</div>
-          <div class="timeline-title">Graduate Academic Preparation Program (GAPP)</div>
-          <div class="timeline-sub">UC Santa Barbara</div>
-          <div class="timeline-desc">Santa Barbara, US · Incoming</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">02/2025 – 03/2025 · Education</div>
-          <div class="timeline-title">Exchange Student</div>
-          <div class="timeline-sub">University of Cambridge</div>
-          <div class="timeline-desc">Cambridge, UK</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">07/2024 – 09/2024 · Experience</div>
-          <div class="timeline-title">Intern, Dalian Hi-Think Computer Technology</div>
-          <div class="timeline-desc">Development, testing, and project tracking under senior engineers.</div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-date">09/2022 – 06/2026 · Education</div>
-              <div class="timeline-title">BSc. in Computer Science</div>
-          <div class="timeline-sub">Dalian University of Technology</div>
-          <div class="timeline-desc">Dalian, China</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="publications" class="wrap">
-      <div class="section-head">
-        <h2>Publications &amp; Awards</h2>
-      </div>
-      <div class="two-col">
-        <div class="card">
-          <h3>Publications</h3>
-          <p>CCL 2026</p>
-        </div>
-        <div class="card">
-          <h3>Awards</h3>
-          <p>Third Prize, “Challenge Cup” Competition, Dalian University of Technology (2023)</p>
-          <p>Third Prize, National English Competition for College Students (2024)</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="life" class="wrap">
-      <div class="section-head">
-        <h2>Beyond Research</h2>
-        <p class="lead">A little more about me.</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-top:0">From Chemical Engineering to Computer Science</h3>
-        <p style="margin:0">
-          I started university in chemical engineering. As I took more programming and
-          language-related courses, I found myself increasingly drawn to how machines understand
-          and generate human language, so I switched to computer science. That decision has shaped
-          the work I do today.
-        </p>
-      </div>
-    </section>
-
-    <section id="contact" class="wrap">
-      <div class="contact-box">
-        <h2>Get in Touch</h2>
-        <p>Interested in my work or just want to chat? Reach me at <a href="mailto:kgong@ucsb.edu">kgong@ucsb.edu</a>.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    © 2026 Ke Gong
-  </footer>
-</body>
-</html>
+<nav><div class="wrap nav-inner">
+<span class="brand">Ke Gong</span>
+<ul class="nav-links">
+<li><a href="#news">News</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#research">Research</a></li>
+<li><a href="#timeline">Timeline</a></li>
+<li><a href="#life">Life</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul></div></nav>
+<header class="hero wrap"><div class="hero-grid"><div>
+<h1>Ke Gong</h1>
+<div class="roles">
+<div>BSc. in Computer Science, Dalian University of Technology</div>
+<div>Incoming Graduate Student, UC Santa Barbara</div>
+</div>
+<div class="hero-contact">
+<a href="mailto:kgong@ucsb.edu">kgong@ucsb.edu</a>
+<a href="https://github.com/Eric-G236" target="_blank" rel="noopener">GitHub</a>
+<a href="https://eric-g236.github.io/" target="_blank" rel="noopener">Homepage</a>
+</div></div>
+<div class="photo-slot">Photo</div>
+</div></header>
+<main>
+<section id="news" class="wrap"><div class="section-head"><h2>News</h2></div>
+<div class="card"><p style="margin:0">I am currently in Santa Barbara and actively looking for research opportunities (RA positions).</p></div>
+</section>
+<section id="about" class="wrap"><div class="section-head"><h2>About</h2></div>
+<p class="intro">I am a recent Computer Science graduate from Dalian University of Technology and an incoming graduate student at UC Santa Barbara. My work sits at the intersection of natural language processing and automatic speech recognition — I enjoy building systems that help machines understand human language in real, sometimes messy, settings.</p>
+</section>
+<section id="research" class="wrap"><div class="section-head"><h2>Research</h2><p class="lead">A few problems I have been thinking about and working on.</p></div><div class="research-grid">
+<div class="card research-card">
+<div class="tag">Speech &amp; Low-Resource Dialects</div>
+<h3>Speech Transcription for the Sichuan–Chongqing Dialect</h3>
+<p>I designed a high-accuracy speech transcription system using Paraformer-large as the base model, built on a ~29,000-utterance subset of the KeSpeech dataset. To handle limited dialect data, I proposed a partial-parameter-freezing fine-tuning strategy that freezes low-level acoustic modules and fine-tunes only high-level semantic layers.</p>
+<p>This reduced the character error rate from 9.5% to 7.05% on KeSpeech, and from 18.2% to 7.6% on the cross-corpus WSC-Eval set. Adding Qwen2-1.5B-Instruct as a post-correction module further lowered CER to 6.47%, and I deployed an interactive demo with FastAPI and Gradio that runs with a real-time factor below 0.02 on an RTX 4090.</p>
+</div>
+<div class="card research-card">
+<div class="tag">Trust &amp; Safety · Project Leader · 03/2025 – 03/2026</div>
+<h3>Real-Time Detection of Illegal Content in Livestreams</h3>
+<p>I led the development of a system that combines speech-to-text transcription with a BERT-based classification model to detect illegal behaviors such as false advertising and exaggerated claims in e-commerce livestreams.</p>
+<p>To address scarce training data, I tested multiple data augmentation strategies and applied domain-specific fine-tuning to improve both accuracy and robustness.</p>
+</div>
+<div class="card research-card">
+<div class="tag">Vision &amp; Robotics · Robot Software Development · 07/2024 – 08/2024</div>
+<h3>Vision-Guided Robotic Box-Handling</h3>
+<p>I contributed to a computer-vision-based robotic system for object recognition and automated box-handling on an Atlas development board, and developed the communication module that connects the vision-recognition module with the robot controller.</p>
+</div>
+</div></section>
+<section id="aims" class="wrap"><div class="section-head"><h2>What I Care About</h2></div><div class="cards">
+<div class="card">
+<h3>Language Accessibility</h3>
+<p>Making speech technology work for underrepresented dialects and languages, not only for well-resourced ones.</p>
+</div>
+<div class="card">
+<h3>Safer Online Information</h3>
+<p>Building tools that help detect misleading or harmful content in real time.</p>
+</div>
+<div class="card">
+<h3>Language and Machines</h3>
+<p>Exploring how perception and language help machines interact with the physical world.</p>
+</div>
+</div></section>
+<section id="timeline" class="wrap"><div class="section-head"><h2>Timeline</h2></div><div class="timeline">
+<div class="timeline-item">
+<div class="timeline-date">09/2026 – 06/2027 · Education</div>
+<div class="timeline-title">Graduate Academic Preparation Program (GAPP)</div>
+<div class="timeline-sub">UC Santa Barbara</div>
+<div class="timeline-desc">Santa Barbara, US · Incoming</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">02/2025 – 03/2025 · Education</div>
+<div class="timeline-title">Exchange Student</div>
+<div class="timeline-sub">University of Cambridge</div>
+<div class="timeline-desc">Cambridge, UK</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">07/2024 – 09/2024 · Experience</div>
+<div class="timeline-title">Intern, Dalian Hi-Think Computer Technology</div>
+<div class="timeline-desc">Development, testing, and project tracking under senior engineers.</div>
+</div>
+<div class="timeline-item">
+<div class="timeline-date">09/2022 – 06/2026 · Education</div>
+<div class="timeline-title">BSc. in Computer Science</div>
+<div class="timeline-sub">Dalian University of Technology</div>
+<div class="timeline-desc">Dalian, China</div>
+</div>
+</div></section>
+<section id="publications" class="wrap"><div class="section-head"><h2>Publications &amp; Awards</h2></div><div class="two-col">
+<div class="card"><h3>Publications</h3>
+<p>CCL 2026</p>
+</div>
+<div class="card"><h3>Awards</h3>
+<p>Third Prize, “Challenge Cup” Competition, Dalian University of Technology (2023)</p>
+<p>Third Prize, National English Competition for College Students (2024)</p>
+</div>
+</div></section>
+<section id="life" class="wrap"><div class="section-head"><h2>Beyond Research</h2><p class="lead">A little more about me.</p></div><div class="card">
+<h3>From Chemical Engineering to Computer Science</h3>
+<p style="margin:0">I started university in chemical engineering. As I took more programming and language-related courses, I found myself increasingly drawn to how machines understand and generate human language, so I switched to computer science. That decision has shaped the work I do today.</p>
+</div></section>
+<section id="contact" class="wrap"><div class="contact-box"><h2>Get in Touch</h2>
+<p>Interested in my work or just want to chat? Reach me at <a href="mailto:kgong@ucsb.edu">kgong@ucsb.edu</a>.</p>
+</div></section>
+</main>
+<footer>© 2026 Ke Gong</footer>
+</body></html>
