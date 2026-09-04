@@ -77,6 +77,7 @@
     <div class="actions">
       <button type="button" onclick="preview()">预览主页</button>
       <button type="button" class="primary" onclick="save()">保存并生成</button>
+      <button type="button" onclick="pushSite()">推送到 GitHub</button>
     </div>
   </div>
 
@@ -273,6 +274,21 @@
     async function preview() {
       const ok = await save();
       if (ok) window.open("/index.html?t=" + Date.now(), "_blank");
+    }
+
+    async function pushSite() {
+      try {
+        const res = await fetch("/api/push", { method: "POST" });
+        const obj = await res.json();
+        if (obj.ok) {
+          toast(obj.message || "已推送到 GitHub");
+        } else {
+          const err = String(obj.error || res.status).slice(0, 200);
+          toast("推送失败：" + err, true);
+        }
+      } catch (e) {
+        toast("推送失败：" + e.message, true);
+      }
     }
 
     function toast(msg, isError = false) {

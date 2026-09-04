@@ -11,6 +11,7 @@ import base64
 import glob
 import json
 import os
+import subprocess
 import threading
 import urllib.parse
 import webbrowser
@@ -23,6 +24,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data.json")
 EDITOR_PATH = os.path.join(BASE_DIR, "editor.html")
 INDEX_PATH = os.path.join(BASE_DIR, "index.html")
+
+for _extra in (r"C:\Program Files\Git\cmd", r"C:\Program Files\Git\bin", r"C:\Program Files\GitHub CLI"):
+    if os.path.isdir(_extra) and _extra not in os.environ.get("PATH", ""):
+        os.environ["PATH"] = _extra + os.pathsep + os.environ["PATH"]
 
 
 class EditorHandler(BaseHTTPRequestHandler):
@@ -64,6 +69,10 @@ class EditorHandler(BaseHTTPRequestHandler):
 
         if path == "/api/upload":
             self._handle_upload(raw)
+            return
+
+        if path == "/api/push":
+            self._handle_push()
             return
 
         if path != "/api/data":
@@ -132,6 +141,46 @@ class EditorHandler(BaseHTTPRequestHandler):
             handle.write(content)
 
         self._send(200, json.dumps({"ok": True, "filename": filename}), "application/json; charset=utf-8")
+
+    def _handle_push(self):
+        try:
+            files = ["index.html", "data.json", "build.py", "editor.html", "web.py", ".gitignore"]
+            files += [os.path.basename(p) for p in glob.glob(os.path.join(BASE_DIR, "photo.*"))]
+            code, output = self._run_git(["add"] + files)
+            if code != 0:
+                self._send(500, json.dumps({"ok": False, "error": output}), "application/json; charset=utf-8")
+                return
+
+            code, output = self._run_git(["status", "--porcelain"])
+            if not output.strip():
+                self._send(200, json.dumps({"ok": True, "message": "没有新的改动需要推送"}), "application/json; charset=utf-8")
+                return
+
+            code, output = self._run_git(["commit", "-m", "update homepage from editor"])
+            if code != 0 and "nothing to commit" not in output.lower():
+                self._send(500, json.dumps({"ok": False, "error": output}), "application/json; charset=utf-8")
+                return
+
+            code, output = self._run_git(["push"])
+            if code != 0:
+                self._send(500, json.dumps({"ok": False, "error": output}), "application/json; charset=utf-8")
+                return
+
+            self._send(200, json.dumps({"ok": True, "message": "已推送到 GitHub"}), "application/json; charset=utf-8")
+        except Exception as exc:
+            self._send(500, json.dumps({"ok": False, "error": str(exc)}), "application/json; charset=utf-8")
+
+    def _run_git(self, args):
+        result = subprocess.run(
+            ["git"] + args,
+            cwd=BASE_DIR,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        output = (result.stdout or "") + (result.stderr or "")
+        return result.returncode, output.strip()
 
     def log_message(self, format, *args):
         print(format % args)
