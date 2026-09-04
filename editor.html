@@ -58,6 +58,9 @@
     .repeat-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
     .num { color: #8a97a5; font-size: 0.8rem; font-weight: 700; }
     .hint { color: var(--muted); font-size: 0.78rem; font-weight: 400; margin-top: 4px; }
+    .photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; }
+    .photo-preview-box { margin: 8px 0 12px; }
+    .photo-preview-box img { max-width: 120px; max-height: 120px; border-radius: 10px; border: 1px solid var(--border); }
     .toast {
       position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
       background: #1c2733; color: #fff; padding: 10px 18px; border-radius: 999px;
@@ -118,7 +121,11 @@
           <label>GitHub 链接<input id="f_github" value="${escAttr(d.github)}" placeholder="https://github.com/..."></label>
           <label>个人主页链接<input id="f_website" value="${escAttr(d.website)}" placeholder="https://..."></label>
         </div>
-        <label>照片文件名（可选，放在同目录）<input id="f_photo" value="${escAttr(d.photo)}" placeholder="例如 photo.jpg"></label>
+        <div class="photo-row">
+          <label>照片<input id="f_photo" value="${escAttr(d.photo)}" placeholder="例如 photo.jpg"></label>
+          <label>上传照片<input type="file" id="photoFile" accept="image/*" onchange="uploadPhoto(this.files)"></label>
+        </div>
+        <div id="photoPreviewBox" class="photo-preview-box" style="display:none"><img id="photoPreview" alt="照片预览"></div>
         <div class="sub-label">身份 / 头衔</div>${roles}
         <label>关于我<textarea id="f_about" rows="4">${escText(d.about)}</textarea></label>
       `);
@@ -218,6 +225,39 @@
     function addAim() { collect(); state.aims.push({ title: "", text: "" }); render(); }
     function addTimeline() { collect(); state.timeline.push({ date: "", type: "Education", title: "", sub: "", desc: "" }); render(); }
     function removeAt(type, index) { collect(); state[type].splice(index, 1); render(); }
+
+    async function uploadPhoto(files) {
+      const file = files && files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function () {
+        const dataUrl = reader.result;
+        const preview = $("photoPreview");
+        const previewBox = $("photoPreviewBox");
+        if (preview && previewBox) {
+          preview.src = dataUrl;
+          previewBox.style.display = "block";
+        }
+        try {
+          const res = await fetch("/api/upload", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ filename: file.name, data: dataUrl })
+          });
+          const obj = await res.json();
+          if (obj.ok) {
+            const input = $("f_photo");
+            if (input) input.value = obj.filename;
+            toast("照片已上传，记得点“保存并生成”");
+          } else {
+            toast("上传失败：" + (obj.error || res.status), true);
+          }
+        } catch (e) {
+          toast("上传失败：" + e.message, true);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
 
     async function save() {
       collect();

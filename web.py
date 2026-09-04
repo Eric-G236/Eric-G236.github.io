@@ -7,6 +7,8 @@ It starts a local server, opens your browser, and lets you edit the content
 stored in data.json. When you save, index.html is regenerated automatically.
 """
 
+import base64
+import glob
 import json
 import os
 import threading
@@ -57,12 +59,17 @@ class EditorHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = urllib.parse.urlparse(self.path).path
+        length = int(self.headers.get("Content-Length", 0))
+        raw = self.rfile.read(length)
+
+        if path == "/api/upload":
+            self._handle_upload(raw)
+            return
+
         if path != "/api/data":
             self._send(404, "Not found")
             return
 
-        length = int(self.headers.get("Content-Length", 0))
-        raw = self.rfile.read(length)
         try:
             data = json.loads(raw.decode("utf-8"))
             if not isinstance(data, dict):
@@ -81,6 +88,50 @@ class EditorHandler(BaseHTTPRequestHandler):
             return
 
         self._send(200, json.dumps({"ok": True}), "application/json; charset=utf-8")
+
+    def _handle_upload(self, raw):
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+            data_url = payload.get("data", "")
+        except Exception:
+            self._send(400, json.dumps({"ok": False, "error": "无法解析上传数据"}), "application/json; charset=utf-8")
+            return
+
+        if not data_url.startswith("data:") or "," not in data_url:
+            self._send(400, json.dumps({"ok": False, "error": "无效的图片数据"}), "application/json; charset=utf-8")
+            return
+
+        meta, b64 = data_url.split(",", 1)
+        mime = meta.split(";")[0].split(":")[1] if ":" in meta else ""
+        ext_map = {
+            "image/jpeg": "jpg",
+            "image/png": "png",
+            "image/webp": "webp",
+            "image/gif": "gif",
+        }
+        ext = ext_map.get(mime)
+        if not ext:
+            self._send(400, json.dumps({"ok": False, "error": "仅支持 JPG、PNG、WebP、GIF 图片"}), "application/json; charset=utf-8")
+            return
+
+        try:
+            content = base64.b64decode(b64)
+        except Exception:
+            self._send(400, json.dumps({"ok": False, "error": "图片解码失败"}), "application/json; charset=utf-8")
+            return
+
+        for old_ext in ("jpg", "jpeg", "png", "webp", "gif"):
+            for old_path in glob.glob(os.path.join(BASE_DIR, f"photo.{old_ext}")):
+                try:
+                    os.remove(old_path)
+                except OSError:
+                    pass
+
+        filename = f"photo.{ext}"
+        with open(os.path.join(BASE_DIR, filename), "wb") as handle:
+            handle.write(content)
+
+        self._send(200, json.dumps({"ok": True, "filename": filename}), "application/json; charset=utf-8")
 
     def log_message(self, format, *args):
         print(format % args)
